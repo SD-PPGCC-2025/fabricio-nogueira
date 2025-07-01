@@ -1,0 +1,17 @@
+AMQP_URI: amqp://${RABBITMQ_USER:rabbit}:${RABBITMQ_PASSWORD:rabbit}@${RABBITMQ_HOST:localhost}:${RABBITMQ_PORT:5672}
+
+LOGGING:
+  version: 1
+  formatters:
+    default:
+      format: '[%(asctime)s][%(levelname)s] %(name)s %(filename)s:%(funcName)s:%(lineno)d | %(message)s'
+      datefmt: '%H:%M:%S'
+  handlers:
+    default:
+      level: INFO
+      formatter: default
+      class: logging.StreamHandler
+  root:
+    level: INFO
+    propagate: True
+    handlers: [ default ]

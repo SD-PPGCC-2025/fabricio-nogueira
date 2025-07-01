@@ -1,0 +1,17 @@
+AMQP_URI: amqp://${RABBITMQ_USER:rabbit}:${RABBITMQ_PASSWORD:rabbit}@${RABBITMQ_HOST:localhost}:${RABBITMQ_PORT:5672}
+
+LOGGING:
+  version: 1
+  formatters:
+    default:
+      class: settings.logs.CustomJsonFormatter
+  handlers:
+    default:
+      level: DEBUG
+      formatter: default
+      class: logging.StreamHandler
+      stream: ext://sys.stdout
+  root:
+    level: INFO
+    propagate: True
+    handlers: [ default ]

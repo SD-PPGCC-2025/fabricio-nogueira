@@ -1,0 +1,59 @@
+x-healthcheck-conf: &healthcheck-conf
+  interval: 20s
+  timeout: 10s
+  retries: 5
+
+x-service-defaults: &service-defaults
+  stdin_open: true
+  tty: true
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
+
+services:
+  #############################################################################
+  # Tools
+  #############################################################################
+  broker:
+    image: rabbitmq:3.13.1-management
+    container_name: broker
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbit
+      - RABBITMQ_DEFAULT_PASS=rabbit
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics", "ping" ]
+      <<: *healthcheck-conf
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5
+
+  #############################################################################
+  # Servers
+  #############################################################################
+  service_a:
+    build:
+      context: ./services/service_a
+      target: devService
+    container_name: service_a
+    volumes:
+      - ./services/service_a:/service
+    env_file: services/service_a/.env
+    <<: *service-defaults
+
+  service_b:
+    build:
+      context: ./services/service_b
+      target: devService
+    container_name: service_b
+    volumes:
+      - ./services/service_b:/service
+    env_file: services/service_b/.env
+    <<: *service-defaults

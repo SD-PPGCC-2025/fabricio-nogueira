@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "client"
+version = "0.1.0"
+description = "Make maitences calling procedures from localhost"
+authors = ["Fabricio Nogueira <nogsantos@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+nameko = "^2.14.1"
+nameko-vault = "^0.3.0"
+idna_ssl = "^1.1.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 79
+skip-string-normalization = true
+target-version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | migrations
+)
+'''
